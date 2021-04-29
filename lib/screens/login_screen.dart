@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_mobx_todo/store/login_store.dart';
 import 'package:flutter_mobx_todo/widgets/custom_icon_button.dart';
 import 'package:flutter_mobx_todo/widgets/custom_text_field.dart';
 
@@ -11,6 +13,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  LoginStore loginStore = LoginStore();
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       hint: 'E-mail',
                       prefix: Icon(Icons.account_circle),
                       textInputType: TextInputType.emailAddress,
-                      onChanged: (email){
-
-                      },
+                      onChanged: loginStore.setEmail,
                       enabled: true,
                     ),
                     const SizedBox(height: 16,),
@@ -43,9 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       hint: 'Senha',
                       prefix: Icon(Icons.lock),
                       obscure: true,
-                      onChanged: (pass){
-
-                      },
+                      onChanged: loginStore.setSenha,
                       enabled: true,
                       suffix: CustomIconButton(
                         radius: 32,
@@ -56,23 +56,25 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     const SizedBox(height: 16,),
-                    SizedBox(
-                      height: 44,
-                      child: RaisedButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(32),
+                    Observer(builder: (_) {
+                      return SizedBox(
+                        height: 44,
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(32),
+                          ),
+                          child: Text('Login'),
+                          color: Theme.of(context).primaryColor,
+                          disabledColor: Theme.of(context).primaryColor.withAlpha(100),
+                          textColor: Colors.white,
+                          onPressed: !loginStore.formValid ? null : (){
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(builder: (context)=>ListScreen())
+                            );
+                          },
                         ),
-                        child: Text('Login'),
-                        color: Theme.of(context).primaryColor,
-                        disabledColor: Theme.of(context).primaryColor.withAlpha(100),
-                        textColor: Colors.white,
-                        onPressed: (){
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context)=>ListScreen())
-                          );
-                        },
-                      ),
-                    )
+                      );
+                    })
                   ],
                 ),
               )

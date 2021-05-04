@@ -12,21 +12,31 @@ abstract class _LoginStore with Store {
   String email = "";
 
   @observable
-  bool passwordVisible = false;
+  bool loading = false;
 
-  @action
-  void setEmail(value) => email = value;
+  @observable
+  bool passwordVisible = false;
 
   @observable
   String senha = "";
-
-  @action
-  void setSenha(value) => senha = value;
 
   @computed
   bool get formValid => senha.isNotEmpty && senha.length > 6 && email.isNotEmpty && email.length > 6;
 
   @action
+  void setEmail(value) => email = value;
+
+  @action
+  void setSenha(value) => senha = value;
+
+  @action
   void togglePasswordVisible() => passwordVisible = !passwordVisible;
+
+  @action
+  Future<void> login() async {
+    loading = true;
+    await Future.delayed(Duration(seconds: 2));
+    loading = false;
+  }
 
 }

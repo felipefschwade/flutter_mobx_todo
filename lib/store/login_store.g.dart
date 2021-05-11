@@ -61,6 +61,21 @@ mixin _$LoginStore on _LoginStore, Store {
     });
   }
 
+  final _$loggedInAtom = Atom(name: '_LoginStore.loggedIn');
+
+  @override
+  bool get loggedIn {
+    _$loggedInAtom.reportRead();
+    return super.loggedIn;
+  }
+
+  @override
+  set loggedIn(bool value) {
+    _$loggedInAtom.reportWrite(value, super.loggedIn, () {
+      super.loggedIn = value;
+    });
+  }
+
   final _$senhaAtom = Atom(name: '_LoginStore.senha');
 
   @override
@@ -124,6 +139,7 @@ mixin _$LoginStore on _LoginStore, Store {
 email: ${email},
 loading: ${loading},
 passwordVisible: ${passwordVisible},
+loggedIn: ${loggedIn},
 senha: ${senha},
 formValid: ${formValid}
     ''';

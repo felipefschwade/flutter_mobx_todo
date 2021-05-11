@@ -18,6 +18,9 @@ abstract class _LoginStore with Store {
   bool passwordVisible = false;
 
   @observable
+  bool loggedIn = false;
+
+  @observable
   String senha = "";
 
   @computed
@@ -37,6 +40,7 @@ abstract class _LoginStore with Store {
     loading = true;
     await Future.delayed(Duration(seconds: 2));
     loading = false;
+    loggedIn = true;
   }
 
 }
